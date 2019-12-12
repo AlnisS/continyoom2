@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://tracks/new_ds_rainbow_road/power_star.dae" type="PackedScene" id=1]
+
+[node name="power_star" index="0" instance=ExtResource( 1 )]
