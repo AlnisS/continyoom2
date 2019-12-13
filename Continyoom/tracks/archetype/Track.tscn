@@ -14,16 +14,18 @@ transform = Transform( -0.697509, 0, -0.716576, 0, 1, 0, 0.716576, 0, -0.697509,
 
 [node name="CSGBox" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.1868, 0, 21.3697 )
+visible = false
 use_collision = true
-collision_layer = 2
+collision_layer = 0
 width = 25.9547
 height = 28.0085
 depth = 12.3973
 
 [node name="CSGBox2" type="CSGBox" parent="."]
 transform = Transform( 0.88475, -0.463522, 0.0486333, 0.452915, 0.830477, -0.324309, 0.109935, 0.308959, 0.9447, -23.3202, 1.02154, 23.4794 )
+visible = false
 use_collision = true
-collision_layer = 4
+collision_layer = 0
 width = 25.9547
 height = 28.0085
 depth = 12.3973

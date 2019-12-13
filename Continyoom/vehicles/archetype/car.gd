@@ -1,29 +1,39 @@
 extends Spatial
 
-signal ground_hit
-signal timescale_updated(new_timescale)
+# all signals (comment added for visual consistency)
+signal ground_hit # once on landing on ground
+signal timescale_updated(new_timescale) # once per physics update
 
+# debug drawing resource
 onready var draw: ImmediateGeometry = get_node("../draw")
-var m = SpatialMaterial.new()
+var m: SpatialMaterial = SpatialMaterial.new()
 
+# time travel data
+var timescale: float = 1
 var history: Array = Array()
 var latest_state: Dictionary
+
+# car physics and camera physics states
 onready var initial_phys_transform: Transform = get_global_transform()
-onready var initial_camera_transform: Transform = get_global_transform()
 var phys_transform: Transform
+onready var initial_camera_transform: Transform = get_global_transform()
 var camera_transform: Transform
 
-var targ_steer = 0
-var targ_drift = 0
-var curr_steer = 0
-var curr_drift = 0
+# drifting variables
+var drift_hint: int = 0 # proposed drift to begin when ground is hit
+var targ_drift: int = 0 # drift control (left, none, right)
+var curr_drift: float = 0 # internal interpolation variable
 
+# steering variables
+var targ_steer: float = 0 # steering control (-1 to 1)
+var curr_steer: float = 0 # internal interpolation variable
+
+# velocities
 var pos_vel: Vector3 = Vector3(0, 0, 0)
 var rot_vel: float = 0
-var vrt_vel: float = 0
+var vrt_vel: float = 0 # TODO: combine with pos_vel
 
-var timescale = 1
-
+# all constants (comment added for visual consistency)
 const STEER_SPEED = 14
 const DRIFT_SPEED = 8
 const HEIGHT_ABOVE_GROUND = 0
@@ -101,7 +111,13 @@ func _update_steer(delta: float) -> void:
 
 
 func _update_drift(delta: float) -> void:
-	pass
+	if Input.is_action_pressed("bhop") and !drift_hint and vrt_vel:
+		if Input.is_action_pressed("steer_left"):
+			drift_hint = -1
+		if Input.is_action_pressed("steer_right"):
+			drift_hint = 1
+	if !Input.is_action_pressed("bhop"):
+		drift_hint = 0
 
 
 func _update_speed(delta: float) -> float:
@@ -110,7 +126,7 @@ func _update_speed(delta: float) -> float:
 		result += SPEED_FACTOR * delta
 	result -= SPEED_DEC * delta
 	result = clamp(result, 0, MAX_SPEED)
-	if result < MIN_DRIFT_SPEED * timescale:
+	if result < MIN_DRIFT_SPEED:
 		targ_drift = 0
 	return result
 
@@ -119,7 +135,6 @@ func _collide_walls(delta: float) -> void:
 	var space_state = get_world().get_direct_space_state()
 	var tmp_origin = phys_transform.origin + phys_transform.basis.y * WALL_COLLISION_HEIGHT
 	var hit = null
-	var hit_normal = null
 	var r_hit = space_state.intersect_ray(tmp_origin, tmp_origin + phys_transform.basis.x * BOOP_DISTANCE, [], 0x00000004)
 	var l_hit = space_state.intersect_ray(tmp_origin, tmp_origin - phys_transform.basis.x * BOOP_DISTANCE, [], 0x00000004)
 	var f_hit = space_state.intersect_ray(tmp_origin, tmp_origin - phys_transform.basis.z * BOOP_DISTANCE, [], 0x00000004)
@@ -139,52 +154,24 @@ func _collide_walls(delta: float) -> void:
 #	draw.end()
 	
 	if l_hit:
-		hit_normal = l_hit.normal
 		hit = l_hit
-#		phys_transform.origin = hit.position + phys_transform.basis.x * BOOP_DISTANCE
-#		print("l_hit")
-#		phys_transform = phys_transform.translated(+phys_transform.basis.x * (BOOP_DISTANCE - l_hit.position.distance_to(phys_transform.origin)))
 	if r_hit:
-		hit_normal = r_hit.normal
 		hit = r_hit
-#		phys_transform.origin = hit.position - phys_transform.basis.x * BOOP_DISTANCE
-#		print("r_hit")
-#		phys_transform = phys_transform.translated(-phys_transform.basis.x * (BOOP_DISTANCE - r_hit.position.distance_to(phys_transform.origin)))
 	if f_hit:
-		hit_normal = f_hit.normal
 		hit = f_hit
-#		phys_transform.origin = hit.position + phys_transform.basis.z * BOOP_DISTANCE
-#		print("f_hit")
-#		phys_transform = phys_transform.translated(+phys_transform.basis.z * (BOOP_DISTANCE - f_hit.position.distance_to(phys_transform.origin)))
 	if b_hit:
-		hit_normal = b_hit.normal
 		hit = b_hit
-#		phys_transform.origin = hit.position - phys_transform.basis.z * BOOP_DISTANCE
-#		print("b_hit")
-#		phys_transform = phys_transform.translated(-phys_transform.basis.z * (BOOP_DISTANCE - b_hit.position.distance_to(phys_transform.origin)))
 	
-	if hit_normal != null:
+	if hit != null:
 #		phys_transform.origin += hit_normal * BOOP_DISTANCE
-		var direction = phys_transform.xform_inv(phys_transform.origin + hit_normal)
+		var direction = phys_transform.xform_inv(phys_transform.origin + hit.normal)
 		var angle_between = atan2(pos_vel.z, pos_vel.x) - atan2(direction.z, direction.x)
-		direction = direction.rotated(Vector3(0, 1, 0), PI + angle_between)
-		phys_transform.origin += phys_transform.basis.x * direction.x * pos_vel.length() * 1 * delta
-		phys_transform.origin += phys_transform.basis.z * direction.z * pos_vel.length() * 1 * delta
-		direction = direction.normalized() * pos_vel.length()
-		pos_vel.x = direction.x * 1.0
-		pos_vel.z = direction.z * 1.0
-		
-		
-#		phys_transform.origin = hit.position + hit.normal * BOOP_DISTANCE
-		
-		
-#		print(angle_between)
-#		pos_vel.x -= direction.x * 100
-#		pos_vel.z -= direction.z * 100
-#		print(direction)
-#		phys_transform.origin += phys_transform.basis.x * direction.x
-#		phys_transform.origin += phys_transform.basis.z * direction.z
-	
+		var eject_direction = direction.rotated(Vector3(0, 1, 0), PI + angle_between)
+		phys_transform.origin += phys_transform.basis.x * eject_direction.x * pos_vel.length() * delta
+		phys_transform.origin += phys_transform.basis.z * eject_direction.z * pos_vel.length() * delta
+		var eject_velocity = eject_direction.normalized() * pos_vel.length()
+		pos_vel.x = eject_velocity.x * 1.0
+		pos_vel.z = eject_velocity.z * 1.0
 
 
 func _move(delta: float, speed: float) -> void:
@@ -200,8 +187,6 @@ func _move(delta: float, speed: float) -> void:
 	var vel = lerp(steer_vel, drift_vel, abs(curr_drift))
 	pos_vel.x = _derp(pos_vel.x, vel.x, delta * 10)
 	pos_vel.z = _derp(pos_vel.z, vel.z, delta * 10)
-#	pos_vel = vel
-#	pos_vel = lerp(pos_vel, vel, .3)
 	phys_transform.basis = phys_transform.basis.rotated(phys_transform.basis.y, rot)
 	phys_transform.origin += phys_transform.basis.x * pos_vel.x * delta + phys_transform.basis.z * pos_vel.z * delta
 	phys_transform.origin += phys_transform.basis.y * vrt_vel * delta
@@ -239,6 +224,9 @@ func _collide_ground(delta: float) -> void:
 
 
 func _just_drift() -> void:
+	if drift_hint:
+		targ_drift = drift_hint
+		return
 	if Input.is_action_pressed("steer_left"):
 		targ_drift = -1
 	if Input.is_action_pressed("steer_right"):
@@ -250,10 +238,10 @@ func _keyboard_timescale() -> void:
 		timescale = -REVERSE_SPEED
 	elif Input.is_action_pressed("extra_speed"):
 		timescale = MAX_TIMESCALE
-	elif Input.is_action_pressed("slow"):
-		timescale = SLOW_TIMESCALE
 	else:
 		timescale = NORMAL_TIMESCALE
+	if Input.is_action_pressed("slow"):
+		timescale *= SLOW_TIMESCALE
 
 
 func _reset() -> void:
@@ -311,18 +299,18 @@ func _interpolate_states(later_state: Dictionary, earlier_state: Dictionary, del
 
 func _on_Car_ground_hit():
 	vrt_vel = 0
-	if Input.is_action_pressed("bhop"):
+	if Input.is_action_pressed("bhop") and targ_drift == 0:
 		_just_drift()
+		drift_hint = 0
 
 
 func _move_camera(delta: float) -> void:
 	var prev_camera_transform = $Camera.transform
-	camera_transform = phys_transform.translated(Vector3(0, .5, 1))#camera_transform.interpolate_with(phys_transform.translated(Vector3(0, .5, 1)), .2)
+	camera_transform = phys_transform.translated(Vector3(0, .5, 1))
 	$Camera.set_as_toplevel(true)
 	$Camera.transform = camera_transform
 	$Camera.look_at(phys_transform.origin, phys_transform.basis.y)
 	$Camera.rotate_object_local(Vector3(1, 0, 0), .4)
-#	camera_transform = prev_camera_transform.interpolate_with($Camera.transform, 15 * delta)
 	camera_transform.basis = prev_camera_transform.basis.slerp($Camera.transform.basis, 5 * delta)
 	camera_transform.origin = prev_camera_transform.origin.linear_interpolate($Camera.transform.origin, 10 * delta)
 
