@@ -75,7 +75,8 @@ func _on_DefaultKart_pressed():
 
 
 func _on_ModelB_pressed():
-	pass # Replace with function body.
+	car_path = "res://vehicles/tyber_cruck/betterCybertruck.tscn"
+	menu = START
 
 
 func _on_Quit_pressed():
