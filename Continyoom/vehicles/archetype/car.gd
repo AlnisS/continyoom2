@@ -3,6 +3,8 @@ extends Spatial
 # all signals (comment added for visual consistency)
 signal ground_hit # once on landing on ground
 signal timescale_updated(new_timescale) # once per physics update
+signal targ_drift_updated(new_targ_drift) # once per physics update
+signal curr_steer_updated(new_curr_steer) # once per physics update
 
 # debug drawing resource
 onready var draw: ImmediateGeometry = get_node("../draw")
@@ -70,7 +72,12 @@ func _physics_process(delta):
 	transform.origin = phys_transform.origin
 	transform = transform.interpolate_with(phys_transform, .5)
 	$Camera.transform = camera_transform
+	phys_transform = phys_transform.orthonormalized()
+	transform = transform.orthonormalized()
+	$Camera.transform = $Camera.transform.orthonormalized()
 	emit_signal("timescale_updated", timescale)
+	emit_signal("targ_drift_updated", targ_drift)
+	emit_signal("curr_steer_updated", curr_steer)
 
 
 func _step_backward(delta: float) -> void:
@@ -101,13 +108,11 @@ func _update_steer(delta: float) -> void:
 	if vrt_vel != 0:
 		mult = .5
 	if Input.is_action_pressed("steer_left"):
-		curr_steer = clamp(curr_steer - delta * STEER_SPEED * mult, -1, 1)
+		curr_steer = _derp(curr_steer, -1, delta * STEER_SPEED * mult)
 	elif Input.is_action_pressed("steer_right"):
-		curr_steer = clamp(curr_steer + delta * STEER_SPEED * mult, -1, 1)
-	elif curr_steer < 0:
-		curr_steer = clamp(curr_steer + delta * STEER_SPEED * mult, -1, 0)
-	elif curr_steer > 0:
-		curr_steer = clamp(curr_steer - delta * STEER_SPEED * mult, 0, 1)
+		curr_steer = _derp(curr_steer, 1, delta * STEER_SPEED * mult)
+	else:
+		curr_steer = _derp(curr_steer, 0, delta * STEER_SPEED * mult)
 
 
 func _update_drift(delta: float) -> void:

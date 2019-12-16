@@ -191,6 +191,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=9]
 resource_name = "arrows"
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("arrows:mesh:surface_1/material:uv1_offset")
 tracks/0/interp = 1
@@ -287,4 +288,5 @@ autoplay = "pipes_animation"
 anims/pipes_animation = SubResource( 8 )
 
 [node name="ArrowAnimationPlayer" type="AnimationPlayer" parent="." index="21"]
+autoplay = "arrows"
 anims/arrows = SubResource( 9 )
