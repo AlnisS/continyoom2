@@ -205,7 +205,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( -1, 0, 0 ) ]
 }
 
-[node name="NewDSRainbowRoad" instance=ExtResource( 1 )]
+[node name="NewDSRainbowRoad" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="green_pipe" parent="." index="2"]
@@ -290,3 +290,6 @@ anims/pipes_animation = SubResource( 8 )
 [node name="ArrowAnimationPlayer" type="AnimationPlayer" parent="." index="21"]
 autoplay = "arrows"
 anims/arrows = SubResource( 9 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="22"]
+transform = Transform( 1, 0, 0, 0, -0.106947, 0.994265, 0, -0.994265, -0.106947, -25.5723, 21.3331, 14.4696 )

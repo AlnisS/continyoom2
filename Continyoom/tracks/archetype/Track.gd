@@ -3,7 +3,7 @@ extends Spatial
 
 func _ready():
 	$Car.connect("timescale_updated", $NewDSRainbowRoad, "_on_timescale_updated")
-	add_car("res://vehicles/box_car/BoxCar.tscn")
+#	add_car("res://vehicles/box_car/BoxCar.tscn")
 
 
 func add_track(path: String):

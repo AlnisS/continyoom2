@@ -70,11 +70,13 @@ func _on_TrackUno_pressed():
 
 
 func _on_DefaultKart_pressed():
+	print("default car called")
 	car_path = "res://vehicles/box_car/BoxCar.tscn"
 	menu = START
 
 
 func _on_ModelB_pressed():
+	print("model b called")
 	car_path = "res://vehicles/tyber_cruck/betterCybertruck.tscn"
 	menu = START
 
