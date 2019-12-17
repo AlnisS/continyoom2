@@ -71,7 +71,7 @@ func _physics_process(delta):
 	_collide_ground(delta)
 	set_as_toplevel(true)
 	transform.origin = phys_transform.origin
-	transform = transform.interpolate_with(phys_transform, .05)
+	transform = transform.interpolate_with(phys_transform, .1 )
 	$Camera.transform = camera_transform
 	phys_transform = phys_transform.orthonormalized()
 	transform = transform.orthonormalized()
