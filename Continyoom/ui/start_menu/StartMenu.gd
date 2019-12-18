@@ -32,7 +32,7 @@ func _physics_process(delta):
 	$TrackSelect.rect_position.x = window_size.x * TRACK_SELECT - offset
 	$CarSelect.rect_position.x = window_size.x * CAR_SELECT - offset
 	$Start.rect_position.x = window_size.x * START - offset
-	blur = clamp(menu_disp * 2, 0, 2)
+	blur = clamp(menu_disp * 4, 0, 4)
 	$Blur.material.set_shader_param("amount", blur)
 	$Back.rect_position.x = clamp(window_size.x * TRACK_SELECT - offset, 0, 999999)
 	$BlackScreen.visible = false
