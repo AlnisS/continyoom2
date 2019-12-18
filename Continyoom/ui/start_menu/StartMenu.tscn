@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ui/start_menu/StartMenu.gd" type="Script" id=1]
 [ext_resource path="res://ui/start_menu/wide_car.png" type="Texture" id=2]
@@ -7,13 +7,38 @@
 [ext_resource path="res://ui/fonts/large_menu_text.tres" type="DynamicFont" id=5]
 [ext_resource path="res://ui/start_menu/white.png" type="Texture" id=6]
 
+[sub_resource type="GDScript" id=1]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+var time = 0
+
+var fliptime = 0.1
+
+ #Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	time += delta
+	
+	if time > fliptime:
+		if self.text.ends_with(\"...\"):
+			self.text = \"Loading\"
+		else:
+			self.text += \".\"
+		#print(self.text)
+		time = 0
+	
+"
+
 [node name="StartMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
 
 [node name="WideCar" type="TextureRect" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 2 )
@@ -25,7 +50,6 @@ visible = false
 
 [node name="Title" type="Control" parent="."]
 editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -136,6 +160,7 @@ flat = true
 
 [node name="CarSelect" type="Control" parent="."]
 editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -148,7 +173,6 @@ align = 1
 valign = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CarSelect"]
-editor/display_folded = true
 anchor_top = 0.2
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -231,11 +255,29 @@ text = "Back"
 flat = true
 
 [node name="BlackScreen" type="TextureRect" parent="."]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 6 )
 expand = true
+
+[node name="LoadingAnimation" type="Control" parent="BlackScreen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Loading" type="Label" parent="BlackScreen/LoadingAnimation"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -287.855
+margin_top = -25.0
+margin_right = 106.145
+margin_bottom = 26.0
+custom_fonts/font = ExtResource( 5 )
+text = "Loading"
+script = SubResource( 1 )
 [connection signal="pressed" from="Title/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Title/Quit" to="." method="_on_Quit_pressed"]
 [connection signal="pressed" from="TrackSelect/VBoxContainer/RainbowRoad" to="." method="_on_RainbowRoad_pressed"]

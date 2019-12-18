@@ -41,6 +41,7 @@ func _physics_process(delta):
 		$Back.rect_position.x = window_size.x * (START - menu_disp)
 	$BlackScreen.modulate = Color(1, 1, 1, clamp(menu_disp - START, 0, 1))
 	if menu_disp == LOADING:
+		$BlackScreen/LoadingAnimation/Loading.time = 0
 		_load_stage()
 
 
@@ -62,7 +63,6 @@ func _on_Back_pressed():
 #				$TrackSelect/VBoxContainer/RainbowRoad.grab_focus()
 #			3:
 #				$CarSelect/VBoxContainer/DefaultKart.grab_focus()
-
 
 
 func _on_Play_pressed():
