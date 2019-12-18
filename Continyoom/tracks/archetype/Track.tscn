@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://tracks/archetype/Track.gd" type="Script" id=1]
 [ext_resource path="res://vehicles/archetype/Car.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/pause_menu/PauseScene.tscn" type="PackedScene" id=3]
 
 [node name="Track" type="Spatial"]
 script = ExtResource( 1 )
@@ -10,3 +11,6 @@ script = ExtResource( 1 )
 transform = Transform( -0.697509, 0, -0.716576, 0, 1, 0, 0.716576, 0, -0.697509, -28.1748, 16.5661, 12.197 )
 
 [node name="draw" type="ImmediateGeometry" parent="."]
+
+[node name="PauseMenu" parent="." instance=ExtResource( 3 )]
+visible = false
