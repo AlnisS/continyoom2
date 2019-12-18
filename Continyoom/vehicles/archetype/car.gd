@@ -249,6 +249,12 @@ func _keyboard_timescale() -> void:
 		timescale *= SLOW_TIMESCALE
 
 
+func set_start(tfm: Transform) -> void:
+	initial_phys_transform = tfm
+	initial_camera_transform = tfm
+	_reset()
+
+
 func _reset() -> void:
 	phys_transform = initial_phys_transform
 	pos_vel = Vector3(0, 0, 0)
