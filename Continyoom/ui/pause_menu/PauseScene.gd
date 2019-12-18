@@ -39,3 +39,9 @@ func _on_Menu_pressed():
 
 func _on_Quit_pressed():
 	get_tree().quit()
+	
+
+#automatically pauses the game if the user focuses on something else
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_FOCUS_OUT and !get_tree().paused:
+		Input.action_press("pause")
