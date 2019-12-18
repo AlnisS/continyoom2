@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ui/start_menu/StartMenu.gd" type="Script" id=1]
 [ext_resource path="res://ui/start_menu/wide_car.png" type="Texture" id=2]
@@ -6,6 +6,32 @@
 [ext_resource path="res://ui/fonts/extra_large_menu_text.tres" type="DynamicFont" id=4]
 [ext_resource path="res://ui/fonts/large_menu_text.tres" type="DynamicFont" id=5]
 [ext_resource path="res://ui/start_menu/white.png" type="Texture" id=6]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+var time = 0
+
+var fliptime = 0.1
+
+ #Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	time += delta
+	
+	if time > fliptime:
+		if self.text.ends_with(\"...\"):
+			self.text = \"Loading\"
+		else:
+			self.text += \".\"
+		#print(self.text)
+		time = 0
+	
+"
 
 [node name="StartMenu" type="Control"]
 anchor_right = 1.0
@@ -36,9 +62,21 @@ align = 1
 valign = 1
 
 [node name="Play" type="Button" parent="Title"]
+anchor_left = 0.5
 anchor_top = 0.803
-anchor_right = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
+margin_left = -150.0
+margin_top = 0.199982
+margin_right = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_neighbour_left = NodePath("../Quit")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
 custom_fonts/font = ExtResource( 5 )
 text = "Play"
 flat = true
@@ -48,6 +86,12 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -120.0
 margin_right = 360.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath("../Play")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 5 )
@@ -75,9 +119,18 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="RainbowRoad" type="Button" parent="TrackSelect/VBoxContainer"]
+margin_left = 142.0
 margin_top = 169.0
-margin_right = 1024.0
+margin_right = 881.0
 margin_bottom = 226.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../TrackUno")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+size_flags_horizontal = 4
+size_flags_vertical = 4
 custom_fonts/font = ExtResource( 5 )
 text = "Rainbow Road"
 flat = true
@@ -89,9 +142,18 @@ margin_bottom = 250.0
 rect_min_size = Vector2( 0, 20 )
 
 [node name="TrackUno" type="Button" parent="TrackSelect/VBoxContainer"]
+margin_left = 228.0
 margin_top = 254.0
-margin_right = 1024.0
+margin_right = 796.0
 margin_bottom = 311.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../RainbowRoad")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../../../Back")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+size_flags_horizontal = 4
+size_flags_vertical = 4
 custom_fonts/font = ExtResource( 5 )
 text = "Track Uno"
 flat = true
@@ -120,6 +182,12 @@ alignment = 1
 margin_top = 169.0
 margin_right = 1024.0
 margin_bottom = 226.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../ModelB")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
 custom_fonts/font = ExtResource( 5 )
 text = "Default Kart"
 flat = true
@@ -134,8 +202,14 @@ rect_min_size = Vector2( 0, 20 )
 margin_top = 254.0
 margin_right = 1024.0
 margin_bottom = 311.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_top = NodePath("../DefaultKart")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../../../Back")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
 custom_fonts/font = ExtResource( 5 )
-text = "Model B"
+text = "Cybertruck"
 flat = true
 
 [node name="Start" type="Control" parent="."]
@@ -153,6 +227,12 @@ margin_left = -157.0
 margin_top = -37.0
 margin_right = 157.0
 margin_bottom = 37.0
+focus_neighbour_left = NodePath("../../Back")
+focus_neighbour_top = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath("../../Back")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
 custom_fonts/font = ExtResource( 4 )
 text = "PLAY"
 flat = true
@@ -163,6 +243,11 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -120.0
 margin_right = 360.0
+focus_neighbour_left = NodePath(".")
+focus_neighbour_right = NodePath(".")
+focus_neighbour_bottom = NodePath(".")
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 5 )
@@ -175,6 +260,24 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 6 )
 expand = true
+
+[node name="LoadingAnimation" type="Control" parent="BlackScreen"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Loading" type="Label" parent="BlackScreen/LoadingAnimation"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -287.855
+margin_top = -25.0
+margin_right = 106.145
+margin_bottom = 26.0
+custom_fonts/font = ExtResource( 5 )
+text = "Loading"
+script = SubResource( 1 )
 [connection signal="pressed" from="Title/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Title/Quit" to="." method="_on_Quit_pressed"]
 [connection signal="pressed" from="TrackSelect/VBoxContainer/RainbowRoad" to="." method="_on_RainbowRoad_pressed"]

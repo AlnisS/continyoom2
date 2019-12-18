@@ -18,6 +18,8 @@ func _ready():
 	$Start.show()
 	$Back.show()
 	$Blur.material.set_shader_param("amount", blur)
+	if not Input.get_connected_joypads().empty():
+		$Title/Play.grab_focus()
 
 
 func _physics_process(delta):
@@ -39,6 +41,7 @@ func _physics_process(delta):
 		$Back.rect_position.x = window_size.x * (START - menu_disp)
 	$BlackScreen.modulate = Color(1, 1, 1, clamp(menu_disp - START, 0, 1))
 	if menu_disp == LOADING:
+		$BlackScreen/LoadingAnimation/Loading.time = 0
 		_load_stage()
 
 
@@ -54,15 +57,25 @@ func _load_stage():
 func _on_Back_pressed():
 	if menu > 0:
 		menu -= 1
+	if !Input.get_connected_joypads().empty() && menu == 1:
+			$Title/Play.grab_focus()
+#			2:
+#				$TrackSelect/VBoxContainer/RainbowRoad.grab_focus()
+#			3:
+#				$CarSelect/VBoxContainer/DefaultKart.grab_focus()
 
 
 func _on_Play_pressed():
 	menu = TRACK_SELECT
+	if not Input.get_connected_joypads().empty():
+		$TrackSelect/VBoxContainer/RainbowRoad.grab_focus()
 
 
 func _on_RainbowRoad_pressed():
 	track_path = "res://tracks/new_ds_rainbow_road/NewDSRainbowRoad.tscn"
 	menu = CAR_SELECT
+	if not Input.get_connected_joypads().empty():
+		$CarSelect/VBoxContainer/DefaultKart.grab_focus()
 
 
 func _on_TrackUno_pressed():
@@ -72,10 +85,15 @@ func _on_TrackUno_pressed():
 func _on_DefaultKart_pressed():
 	car_path = "res://vehicles/box_car/BoxCar.tscn"
 	menu = START
+	if not Input.get_connected_joypads().empty():
+		$Start/Start.grab_focus()
 
 
 func _on_ModelB_pressed():
-	pass # Replace with function body.
+	car_path = "res://vehicles/tyber_cruck/betterCybertruck.tscn"
+	menu = START
+	if not Input.get_connected_joypads().empty():
+		$Start/Start.grab_focus()
 
 
 func _on_Quit_pressed():

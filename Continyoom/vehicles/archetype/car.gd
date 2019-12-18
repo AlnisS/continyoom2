@@ -47,11 +47,12 @@ const SLOW_TIMESCALE = .5
 const NORMAL_TIMESCALE = 1
 const MAX_TIMESCALE = 2
 const BOOP_DISTANCE = .375
-const SPEED_FACTOR = 10
+const SPEED_FACTOR = 9999
 const MIN_DRIFT_SPEED = 5
 const SPEED_DEC = 6
 const MAX_SPEED = 10
 const WALL_COLLISION_HEIGHT = .125
+const WALL_BOUNCE_FACTOR = 1
 
 func _ready():
 	self.connect("ground_hit", self, "_on_Car_ground_hit")
@@ -70,7 +71,7 @@ func _physics_process(delta):
 	_collide_ground(delta)
 	set_as_toplevel(true)
 	transform.origin = phys_transform.origin
-	transform = transform.interpolate_with(phys_transform, .5)
+	transform = transform.interpolate_with(phys_transform, .1 )
 	$Camera.transform = camera_transform
 	phys_transform = phys_transform.orthonormalized()
 	transform = transform.orthonormalized()
@@ -157,6 +158,7 @@ func _collide_walls(delta: float) -> void:
 #	draw.add_vertex(tmp_origin)
 #	draw.add_vertex(tmp_origin + phys_transform.basis.z * BOOP_DISTANCE)
 #	draw.end()
+
 	
 	if l_hit:
 		hit = l_hit
@@ -174,7 +176,7 @@ func _collide_walls(delta: float) -> void:
 		var eject_direction = direction.rotated(Vector3(0, 1, 0), PI + angle_between)
 		phys_transform.origin += phys_transform.basis.x * eject_direction.x * pos_vel.length() * delta
 		phys_transform.origin += phys_transform.basis.z * eject_direction.z * pos_vel.length() * delta
-		var eject_velocity = eject_direction.normalized() * pos_vel.length()
+		var eject_velocity = eject_direction.normalized() * pos_vel.length() * WALL_BOUNCE_FACTOR
 		pos_vel.x = eject_velocity.x * 1.0
 		pos_vel.z = eject_velocity.z * 1.0
 

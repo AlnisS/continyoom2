@@ -302,3 +302,8 @@ anims/arrows = SubResource( 9 )
 [node name="CarStart" type="Spatial" parent="." index="22"]
 transform = Transform( -0.697509, 0, -0.716576, 0, 1, 0, 0.716576, 0, -0.697509, -28.1748, 16.5661, 12.197 )
 script = SubResource( 10 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="23"]
+transform = Transform( 1, 0, 0, 0, -0.106947, 0.994265, 0, -0.994265, -0.106947, -25.5723, 21.3331, 14.4696 )
+visible = false
+layers = 2
