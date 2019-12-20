@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/ndsrr_music_reversed.ogg-23d2903c696af92bfc5730cab55615ae.oggstr"
+
+[deps]
+
+source_file="res://tracks/new_ds_rainbow_road/ndsrr_music_reversed.ogg"
+dest_files=[ "res://.import/ndsrr_music_reversed.ogg-23d2903c696af92bfc5730cab55615ae.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
