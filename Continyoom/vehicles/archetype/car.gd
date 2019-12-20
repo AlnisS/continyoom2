@@ -319,7 +319,7 @@ func _on_Car_ground_hit():
 
 func _move_camera(delta: float) -> void:
 	var prev_camera_transform = $Camera.transform
-	camera_transform = phys_transform.translated(Vector3(0, .5, 1))
+	camera_transform = phys_transform.translated(Vector3(0, .75, 1))
 	$Camera.set_as_toplevel(true)
 	$Camera.transform = camera_transform
 	$Camera.look_at(phys_transform.origin, phys_transform.basis.y)

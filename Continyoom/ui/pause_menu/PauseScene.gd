@@ -21,6 +21,7 @@ func _process(delta):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			if not Input.get_connected_joypads().empty():
 				$resume.grab_focus()
+			$Blur.material.set_shader_param("amount", 2)
 		
 		#switch pause state
 		get_tree().paused = not get_tree().paused

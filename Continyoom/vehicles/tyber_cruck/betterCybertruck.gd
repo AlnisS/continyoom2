@@ -10,6 +10,7 @@ func _process(delta):
 func _on_timescale_updated(new_timescale) -> void:
 	timescale = new_timescale
 	$AnimationPlayer.set_speed_scale(timescale * 1)
+	$DriftParticles._on_timescale_updated(timescale)
 
 func _on_targ_drift_updated(new_targ_drift) -> void:
 	targ_drift = new_targ_drift
