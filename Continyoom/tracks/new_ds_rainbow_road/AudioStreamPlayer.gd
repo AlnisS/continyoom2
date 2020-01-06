@@ -6,11 +6,13 @@ const COMPLETE_MUTE_SPEED = 4
 var complete_mute = 0
 var complete_mute_target = 0
 var manual_complete_mute = false
+var is_ready = false
 
 func _ready():
 	yield(get_tree().create_timer(1), "timeout")  # no clue why this works
 	mute = 0.2  # makes start slightly less punchy
 	playing = true
+	is_ready = true
 
 func _physics_process(delta):
 	if (mute == null):
