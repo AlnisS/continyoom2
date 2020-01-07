@@ -36,7 +36,7 @@ var rot_vel: float = 0
 var vrt_vel: float = 0 # TODO: combine with pos_vel
 
 # all constants (comment added for visual consistency)
-const STEER_SPEED = 14
+const STEER_SPEED = 14*2
 const DRIFT_SPEED = 8
 const HEIGHT_ABOVE_GROUND = 0
 const SEARCH_LOW = .5
@@ -109,9 +109,9 @@ func _update_steer(delta: float) -> void:
 	if vrt_vel != 0:
 		mult = .5
 	if Input.is_action_pressed("steer_left"):
-		curr_steer = _derp(curr_steer, -1, delta * STEER_SPEED * mult)
+		curr_steer = _derp(curr_steer, -2, delta * STEER_SPEED * mult)
 	elif Input.is_action_pressed("steer_right"):
-		curr_steer = _derp(curr_steer, 1, delta * STEER_SPEED * mult)
+		curr_steer = _derp(curr_steer, 2, delta * STEER_SPEED * mult)
 	else:
 		curr_steer = _derp(curr_steer, 0, delta * STEER_SPEED * mult)
 
