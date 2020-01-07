@@ -79,7 +79,10 @@ func _on_RainbowRoad_pressed():
 
 
 func _on_TrackUno_pressed():
-	pass # Replace with function body.
+	track_path = "res://tracks/track_uno/track1.tscn"
+	menu = CAR_SELECT
+	if not Input.get_connected_joypads().empty():
+		$CarSelect/VBoxContainer/DefaultKart.grab_focus()
 
 
 func _on_DefaultKart_pressed():
