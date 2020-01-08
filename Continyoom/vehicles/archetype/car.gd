@@ -36,7 +36,7 @@ var rot_vel: float = 0
 var vrt_vel: float = 0 # TODO: combine with pos_vel
 
 # all constants (comment added for visual consistency)
-const STEER_SPEED = 14*2
+const STEER_SPEED = 14
 const DRIFT_SPEED = 8
 const HEIGHT_ABOVE_GROUND = 0
 const SEARCH_LOW = .5
@@ -49,10 +49,28 @@ const MAX_TIMESCALE = 2
 const BOOP_DISTANCE = .375
 const SPEED_FACTOR = 9999
 const MIN_DRIFT_SPEED = 5
-const SPEED_DEC = 6
-const MAX_SPEED = 10
 const WALL_COLLISION_HEIGHT = .125
 const WALL_BOUNCE_FACTOR = 1
+
+
+var cc = 200
+var MAX_SPEED = 7
+var STEER_FACTOR = 1
+var DRIFT_FACTOR = 2
+var DRIFT_INFLUENCE = .75
+var DRIFT_STEER_INFLUENCE = 1
+var SPEED_DEC = 13
+var ACTUAL_ACCEL = 20
+
+func _prepare_cc(var cc):
+	var lcc = (cc - 50) / 150.0
+	MAX_SPEED = lerp(7, 12, lcc)
+	STEER_FACTOR = lerp(1.5, 1, lcc)
+	DRIFT_FACTOR = lerp(2, 2, lcc)
+	DRIFT_INFLUENCE = lerp(.75, .75, lcc)
+	DRIFT_STEER_INFLUENCE = lerp(1, 1, lcc)
+	SPEED_DEC = lerp(13, 8, lcc)
+	ACTUAL_ACCEL = lerp(20, 10, lcc)
 
 func _ready():
 	self.connect("ground_hit", self, "_on_Car_ground_hit")
@@ -109,9 +127,9 @@ func _update_steer(delta: float) -> void:
 	if vrt_vel != 0:
 		mult = .5
 	if Input.is_action_pressed("steer_left"):
-		curr_steer = _derp(curr_steer, -2, delta * STEER_SPEED * mult)
+		curr_steer = _derp(curr_steer, -1, delta * STEER_SPEED * mult)
 	elif Input.is_action_pressed("steer_right"):
-		curr_steer = _derp(curr_steer, 2, delta * STEER_SPEED * mult)
+		curr_steer = _derp(curr_steer, 1, delta * STEER_SPEED * mult)
 	else:
 		curr_steer = _derp(curr_steer, 0, delta * STEER_SPEED * mult)
 
@@ -186,14 +204,14 @@ func _move(delta: float, speed: float) -> void:
 		curr_drift = clamp(curr_drift + DRIFT_SPEED * delta, -1, targ_drift)
 	if curr_drift > targ_drift:
 		curr_drift = clamp(curr_drift - DRIFT_SPEED * delta, targ_drift, +1)
-	var steer_rot = -curr_steer * delta * 1
-	var drift_rot = -(curr_steer * 0.5 + targ_drift * 0.75) * delta * 2
+	var steer_rot = -curr_steer * delta * STEER_FACTOR
+	var drift_rot = -(curr_steer * DRIFT_STEER_INFLUENCE + targ_drift * DRIFT_INFLUENCE) * delta * DRIFT_FACTOR
 	var steer_vel = Vector3(0, 0, -speed)
 	var drift_vel = Vector3(-cos(curr_drift * .75 - PI * .5) * speed, 0, sin(curr_drift * .75 - PI * .5) * speed)
 	var rot = lerp(steer_rot, drift_rot, abs(curr_drift))
 	var vel = lerp(steer_vel, drift_vel, abs(curr_drift))
-	pos_vel.x = _derp(pos_vel.x, vel.x, delta * 10)
-	pos_vel.z = _derp(pos_vel.z, vel.z, delta * 10)
+	pos_vel.x = _derp(pos_vel.x, vel.x, delta * ACTUAL_ACCEL)
+	pos_vel.z = _derp(pos_vel.z, vel.z, delta * ACTUAL_ACCEL)
 	phys_transform.basis = phys_transform.basis.rotated(phys_transform.basis.y, rot)
 	phys_transform.origin += phys_transform.basis.x * pos_vel.x * delta + phys_transform.basis.z * pos_vel.z * delta
 	phys_transform.origin += phys_transform.basis.y * vrt_vel * delta
@@ -263,6 +281,7 @@ func _reset() -> void:
 	rot_vel = 0
 	vrt_vel = 0
 	history = Array()
+	_prepare_cc(cc)
 
 
 func _get_state_as_dictionary(delta: float) -> Dictionary:
