@@ -53,7 +53,7 @@ const WALL_COLLISION_HEIGHT = .125
 const WALL_BOUNCE_FACTOR = 1
 
 
-var cc = 200
+var cc = 100
 var MAX_SPEED = 7
 var STEER_FACTOR = 1
 var DRIFT_FACTOR = 2
