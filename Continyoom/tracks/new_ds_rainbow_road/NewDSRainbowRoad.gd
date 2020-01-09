@@ -30,5 +30,4 @@ func _on_timescale_updated(var new_timescale):
 				else:
 					$TrackMusicPlayer.play($TrackMusicPlayer.stream.get_length() - music_loc)
 			$TrackMusicPlayer.pitch_scale = abs(new_timescale)
-		
-		last_timescale = new_timescale
+			last_timescale = new_timescale
