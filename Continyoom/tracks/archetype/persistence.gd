@@ -4,19 +4,20 @@ extends Node
 #Although located in the tracks/archetype folder, it is not attached to the track
 #It is a singleton called throughout the runtime of the game
 
-var state = {'sound': false}
+var state = {'muted': false}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	set_mute()
 
  #Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if Input.is_action_just_pressed("mute"):
-		state['sound'] = not state['sound']
-		if state['sound']:
-			AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), 10)
+		state['muted'] = not state['muted']
+		set_mute()
+
+func set_mute():
+		if state['muted']:
+			AudioServer.lock()
 		else:
-			AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), 0)
-			
+			AudioServer.unlock()
