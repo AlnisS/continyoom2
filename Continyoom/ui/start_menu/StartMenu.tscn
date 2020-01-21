@@ -49,6 +49,8 @@ stretch_mode = 7
 visible = false
 
 [node name="Title" type="Control" parent="."]
+editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -95,6 +97,60 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = ExtResource( 5 )
 text = "Quit"
+flat = true
+
+[node name="CCSelect" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TrackSelectLabel" type="Label" parent="CCSelect"]
+anchor_right = 1.0
+anchor_bottom = 0.2
+custom_fonts/font = ExtResource( 4 )
+text = "Track Select"
+align = 1
+valign = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CCSelect"]
+anchor_top = 0.2
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+
+[node name="TooFast" type="Button" parent="CCSelect/VBoxContainer"]
+margin_top = 126.0
+margin_right = 1024.0
+margin_bottom = 183.0
+custom_fonts/font = ExtResource( 5 )
+text = "Too Fast"
+flat = true
+
+[node name="Separator" type="Control" parent="CCSelect/VBoxContainer"]
+margin_top = 187.0
+margin_right = 1024.0
+margin_bottom = 207.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="Fast" type="Button" parent="CCSelect/VBoxContainer"]
+margin_top = 211.0
+margin_right = 1024.0
+margin_bottom = 268.0
+custom_fonts/font = ExtResource( 5 )
+text = "Fast"
+flat = true
+
+[node name="Separator2" type="Control" parent="CCSelect/VBoxContainer"]
+margin_top = 272.0
+margin_right = 1024.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="NotSoFast" type="Button" parent="CCSelect/VBoxContainer"]
+margin_top = 296.0
+margin_right = 1024.0
+margin_bottom = 353.0
+custom_fonts/font = ExtResource( 5 )
+text = "Not So Fast"
 flat = true
 
 [node name="TrackSelect" type="Control" parent="."]
@@ -279,6 +335,9 @@ text = "Loading"
 script = SubResource( 1 )
 [connection signal="pressed" from="Title/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Title/Quit" to="." method="_on_Quit_pressed"]
+[connection signal="pressed" from="CCSelect/VBoxContainer/TooFast" to="." method="_on_TooFast_pressed"]
+[connection signal="pressed" from="CCSelect/VBoxContainer/Fast" to="." method="_on_Fast_pressed"]
+[connection signal="pressed" from="CCSelect/VBoxContainer/NotSoFast" to="." method="_on_NotSoFast_pressed"]
 [connection signal="pressed" from="TrackSelect/VBoxContainer/RainbowRoad" to="." method="_on_RainbowRoad_pressed"]
 [connection signal="pressed" from="TrackSelect/VBoxContainer/TrackUno" to="." method="_on_TrackUno_pressed"]
 [connection signal="pressed" from="CarSelect/VBoxContainer/DefaultKart" to="." method="_on_DefaultKart_pressed"]

@@ -19,3 +19,6 @@ func add_car(path: String):
 	$Car.connect("targ_drift_updated", car_visual, "_on_targ_drift_updated")
 	$Car.connect("curr_steer_updated", car_visual, "_on_curr_steer_updated")
 
+func set_cc(cc: float):
+	$Car.cc = cc
+	$Car._prepare_cc(cc)

@@ -5,8 +5,9 @@ var menu_disp: float = 0
 var track_path: String = ""
 var car_path: String = ""
 var blur: float = 0
+var cc: float = 0
 
-enum { TITLE, TRACK_SELECT, CAR_SELECT, START, LOADING }
+enum { TITLE, SPEED, TRACK_SELECT, CAR_SELECT, START, LOADING }
 
 
 func _ready():
@@ -29,12 +30,13 @@ func _physics_process(delta):
 		menu_disp = menu
 	var offset = window_size.x * menu_disp
 	$Title.rect_position.x = window_size.x * TITLE - offset
+	$CCSelect.rect_position.x = window_size.x * SPEED - offset
 	$TrackSelect.rect_position.x = window_size.x * TRACK_SELECT - offset
 	$CarSelect.rect_position.x = window_size.x * CAR_SELECT - offset
 	$Start.rect_position.x = window_size.x * START - offset
 	blur = clamp(menu_disp * 4, 0, 4)
 	$Blur.material.set_shader_param("amount", blur)
-	$Back.rect_position.x = clamp(window_size.x * TRACK_SELECT - offset, 0, 999999)
+	$Back.rect_position.x = clamp(window_size.x * SPEED - offset, 0, 999999)
 	$BlackScreen.visible = false
 	if menu == LOADING:
 		$BlackScreen.visible = true
@@ -50,6 +52,7 @@ func _load_stage():
 	track = load("res://tracks/archetype/Track.tscn").instance()
 	track.add_track(track_path)
 	track.add_car(car_path)
+	track.set_cc(cc)
 	get_tree().get_root().add_child(track)
 	queue_free()
 
@@ -64,9 +67,8 @@ func _on_Back_pressed():
 #			3:
 #				$CarSelect/VBoxContainer/DefaultKart.grab_focus()
 
-
 func _on_Play_pressed():
-	menu = TRACK_SELECT
+	menu = SPEED
 	if not Input.get_connected_joypads().empty():
 		$TrackSelect/VBoxContainer/RainbowRoad.grab_focus()
 
@@ -105,3 +107,18 @@ func _on_Quit_pressed():
 
 func _on_Start_pressed():
 	menu = LOADING
+
+
+func _on_TooFast_pressed():
+	cc = 150
+	menu = TRACK_SELECT
+
+
+func _on_Fast_pressed():
+	cc = 100
+	menu = TRACK_SELECT
+
+
+func _on_NotSoFast_pressed():
+	cc = 50
+	menu = TRACK_SELECT
