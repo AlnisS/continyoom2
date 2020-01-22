@@ -122,3 +122,10 @@ func _on_Fast_pressed():
 func _on_NotSoFast_pressed():
 	cc = 50
 	menu = TRACK_SELECT
+
+
+func _on_CarUno_pressed():
+	car_path = "res://vehicles/uno_car/carUno.tscn"
+	menu = START
+	if not Input.get_connected_joypads().empty():
+		$Start/Start.grab_focus()

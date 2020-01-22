@@ -50,7 +50,6 @@ visible = false
 
 [node name="Title" type="Control" parent="."]
 editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -100,6 +99,8 @@ text = "Quit"
 flat = true
 
 [node name="CCSelect" type="Control" parent="."]
+editor/display_folded = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -214,8 +215,6 @@ text = "Track Uno"
 flat = true
 
 [node name="CarSelect" type="Control" parent="."]
-editor/display_folded = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -234,9 +233,9 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="DefaultKart" type="Button" parent="CarSelect/VBoxContainer"]
-margin_top = 169.0
+margin_top = 126.0
 margin_right = 1024.0
-margin_bottom = 226.0
+margin_bottom = 183.0
 focus_neighbour_left = NodePath(".")
 focus_neighbour_top = NodePath(".")
 focus_neighbour_right = NodePath(".")
@@ -248,15 +247,15 @@ text = "Default Kart"
 flat = true
 
 [node name="Sep" type="Control" parent="CarSelect/VBoxContainer"]
-margin_top = 230.0
+margin_top = 187.0
 margin_right = 1024.0
-margin_bottom = 250.0
+margin_bottom = 207.0
 rect_min_size = Vector2( 0, 20 )
 
 [node name="ModelB" type="Button" parent="CarSelect/VBoxContainer"]
-margin_top = 254.0
+margin_top = 211.0
 margin_right = 1024.0
-margin_bottom = 311.0
+margin_bottom = 268.0
 focus_neighbour_left = NodePath(".")
 focus_neighbour_top = NodePath("../DefaultKart")
 focus_neighbour_right = NodePath(".")
@@ -265,6 +264,20 @@ focus_next = NodePath(".")
 focus_previous = NodePath(".")
 custom_fonts/font = ExtResource( 5 )
 text = "Cybertruck"
+flat = true
+
+[node name="Sep3" type="Control" parent="CarSelect/VBoxContainer"]
+margin_top = 272.0
+margin_right = 1024.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="CarUno" type="Button" parent="CarSelect/VBoxContainer"]
+margin_top = 296.0
+margin_right = 1024.0
+margin_bottom = 353.0
+custom_fonts/font = ExtResource( 5 )
+text = "Car Uno"
 flat = true
 
 [node name="Start" type="Control" parent="."]
@@ -342,5 +355,6 @@ script = SubResource( 1 )
 [connection signal="pressed" from="TrackSelect/VBoxContainer/TrackUno" to="." method="_on_TrackUno_pressed"]
 [connection signal="pressed" from="CarSelect/VBoxContainer/DefaultKart" to="." method="_on_DefaultKart_pressed"]
 [connection signal="pressed" from="CarSelect/VBoxContainer/ModelB" to="." method="_on_ModelB_pressed"]
+[connection signal="pressed" from="CarSelect/VBoxContainer/CarUno" to="." method="_on_CarUno_pressed"]
 [connection signal="pressed" from="Start/Start" to="." method="_on_Start_pressed"]
 [connection signal="pressed" from="Back" to="." method="_on_Back_pressed"]
