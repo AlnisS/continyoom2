@@ -14,6 +14,7 @@ func _ready():
 	$WideCar.show()
 	$Blur.show()
 	$Title.show()
+	$CCSelect.show()
 	$TrackSelect.show()
 	$CarSelect.show()
 	$Start.show()
