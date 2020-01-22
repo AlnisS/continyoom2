@@ -14,6 +14,7 @@ func _ready():
 	$WideCar.show()
 	$Blur.show()
 	$Title.show()
+	$CCSelect.show()
 	$TrackSelect.show()
 	$CarSelect.show()
 	$Start.show()
@@ -38,6 +39,15 @@ func _physics_process(delta):
 	$Blur.material.set_shader_param("amount", blur)
 	$Back.rect_position.x = clamp(window_size.x * SPEED - offset, 0, 999999)
 	$BlackScreen.visible = false
+	var audio_speed = lerp(.9, 1.1, menu_disp / LOADING)
+#	var audio_pitch = -log(audio_speed) / log(2) * .75
+	var audio_pitch = (1 - audio_speed)
+	print(audio_pitch)
+#	print(str(audio_speed) + " " + str(log(audio_speed) / log(2)))
+	$MenuMusic.set_pitch_scale(audio_speed)
+	var effect = AudioServer.get_bus_effect(AudioServer.get_bus_index("MenuBus"), 0)
+	
+	effect.set_pitch_scale(audio_pitch + 1)
 	if menu == LOADING:
 		$BlackScreen.visible = true
 		$Back.rect_position.x = window_size.x * (START - menu_disp)

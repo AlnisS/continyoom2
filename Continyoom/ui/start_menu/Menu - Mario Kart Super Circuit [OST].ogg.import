@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Menu - Mario Kart Super Circuit [OST].ogg-0ac1f76a85b919174c440a018e07aeef.oggstr"
+
+[deps]
+
+source_file="res://ui/start_menu/Menu - Mario Kart Super Circuit [OST].ogg"
+dest_files=[ "res://.import/Menu - Mario Kart Super Circuit [OST].ogg-0ac1f76a85b919174c440a018e07aeef.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
