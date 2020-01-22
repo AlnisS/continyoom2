@@ -1,12 +1,14 @@
 extends Spatial
 
+var track: Node
 
 func _ready():
 	$Car.connect("timescale_updated", $NewDSRainbowRoad, "_on_timescale_updated")
 
 
 func add_track(path: String):
-	var track: Node = load(path).instance()
+#	var track: Node = load(path).instance()
+	track = load(path).instance()
 	$Car.connect("timescale_updated", track, "_on_timescale_updated")
 	add_child(track)
 	track.get_node("CarStart").connect("tfm_ready", $Car, "set_start")
@@ -22,3 +24,10 @@ func add_car(path: String):
 func set_cc(cc: float):
 	$Car.cc = cc
 	$Car._prepare_cc(cc)
+
+func _process(delta):
+	var translation = $Car.translation
+	var area = track.get_node("beginning_end")
+	print(area)
+	area.intersect_point()
+	

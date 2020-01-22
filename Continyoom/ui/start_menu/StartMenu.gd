@@ -42,7 +42,7 @@ func _physics_process(delta):
 	var audio_speed = lerp(.9, 1.1, menu_disp / LOADING)
 #	var audio_pitch = -log(audio_speed) / log(2) * .75
 	var audio_pitch = (1 - audio_speed)
-	print(audio_pitch)
+#	print(audio_pitch)
 #	print(str(audio_speed) + " " + str(log(audio_speed) / log(2)))
 	$MenuMusic.set_pitch_scale(audio_speed)
 	var effect = AudioServer.get_bus_effect(AudioServer.get_bus_index("MenuBus"), 0)

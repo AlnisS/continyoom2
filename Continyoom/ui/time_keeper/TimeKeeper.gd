@@ -5,6 +5,7 @@ extends Control
 # var b = "text"
 
 var time = 0.0
+var translation = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,3 +18,6 @@ func _process(delta):
 	
 	time += delta
 	$Label.text = "Time: " + str(stepify(time, 0.01))
+	
+#	translation = get_node('../Car').translation
+#	area = get_node('../track')
