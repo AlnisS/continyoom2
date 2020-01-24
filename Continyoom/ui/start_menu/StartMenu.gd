@@ -139,3 +139,10 @@ func _on_CarUno_pressed():
 	menu = START
 	if not Input.get_connected_joypads().empty():
 		$Start/Start.grab_focus()
+
+
+func _on_WaluigiPinball_pressed():
+	track_path = "res://tracks/waluigi_pinball/WaluigiPinball.tscn"
+	menu = CAR_SELECT
+	if not Input.get_connected_joypads().empty():
+		$CarSelect/VBoxContainer/DefaultKart.grab_focus()

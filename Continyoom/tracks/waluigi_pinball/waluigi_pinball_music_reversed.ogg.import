@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/waluigi_pinball_music_reversed.ogg-f51eb25bd66aefef3bb2f88fd07db3de.oggstr"
+
+[deps]
+
+source_file="res://tracks/waluigi_pinball/waluigi_pinball_music_reversed.ogg"
+dest_files=[ "res://.import/waluigi_pinball_music_reversed.ogg-f51eb25bd66aefef3bb2f88fd07db3de.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

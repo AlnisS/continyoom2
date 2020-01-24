@@ -78,6 +78,7 @@ func _ready():
 
 
 func _physics_process(delta):
+	print(translation)
 	if Input.is_action_just_pressed("reset"):
 		_reset()
 	_keyboard_timescale()
