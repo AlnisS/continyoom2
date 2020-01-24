@@ -19,5 +19,14 @@ func _process(delta):
 	time += delta
 	$Label.text = "Time: " + str(stepify(time, 0.01))
 	
-#	translation = get_node('../Car').translation
-#	area = get_node('../track')
+func lap():
+	if time < 3: #crude hack, but it'll work for now
+		return
+	
+	$score_display.text = str(stepify(time, 0.01))
+	$score_display.visible = true
+	$Timer.start(4)
+	time = 0
+
+func _on_Timer_timeout():
+	$score_display.visible = false

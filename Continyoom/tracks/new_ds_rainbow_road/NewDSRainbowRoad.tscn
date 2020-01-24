@@ -207,6 +207,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="BoxShape" id=10]
+extents = Vector3( 2.18126, 0.2, 1 )
 
 [node name="NewDSRainbowRoad" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -300,7 +301,8 @@ transform = Transform( 1, 0, 0, 0, -0.296208, 0.955123, 0, -0.955123, -0.296208,
 layers = 2
 
 [node name="beginning_end" type="Area" parent="." index="24"]
-transform = Transform( -1.47227, -0.135367, 2.95853e-008, 0, -8.74228e-009, -1, 1.35367, -0.147227, 3.21776e-008, -26.6624, 15.6884, 12.1603 )
+transform = Transform( -0.736135, -0.676835, 2.95854e-008, 0, -4.37114e-008, -1, 0.676835, -0.736135, 3.21775e-008, -26.6624, 15.6884, 12.1603 )
 
 [node name="CollisionShape" type="CollisionShape" parent="beginning_end" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 7.10543e-015, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 10 )

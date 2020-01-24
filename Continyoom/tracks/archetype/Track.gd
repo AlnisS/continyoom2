@@ -1,6 +1,7 @@
 extends Spatial
 
 var track: Node
+var eligible_to_lap = false
 
 func _ready():
 	$Car.connect("timescale_updated", $NewDSRainbowRoad, "_on_timescale_updated")
@@ -28,6 +29,10 @@ func set_cc(cc: float):
 func _process(delta):
 	var translation = $Car.translation
 	var area = track.get_node("beginning_end")
-	print(area)
-	area.intersect_point()
+	var intersects = area.overlaps_body($Car.get_node("collider"))
 	
+	if not eligible_to_lap and not intersects:
+		eligible_to_lap = true
+	elif eligible_to_lap and intersects:
+		eligible_to_lap = false
+		$TimeKeeper.lap()

@@ -1,14 +1,22 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://tracks/archetype/Track.gd" type="Script" id=1]
 [ext_resource path="res://vehicles/archetype/Car.tscn" type="PackedScene" id=2]
 [ext_resource path="res://ui/time_keeper/TimeKeeper.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ui/pause_menu/PauseScene.tscn" type="PackedScene" id=4]
 
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.1, 0.1, 0.1 )
+
 [node name="Track" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="Car" parent="." instance=ExtResource( 2 )]
+
+[node name="collider" type="KinematicBody" parent="Car"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Car/collider"]
+shape = SubResource( 1 )
 
 [node name="draw" type="ImmediateGeometry" parent="."]
 
