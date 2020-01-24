@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://ui/start_menu/StartMenu.gd" type="Script" id=1]
 [ext_resource path="res://ui/start_menu/wide_car.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://ui/fonts/large_menu_text.tres" type="DynamicFont" id=5]
 [ext_resource path="res://ui/start_menu/white.png" type="Texture" id=6]
 [ext_resource path="res://ui/start_menu/Menu - Mario Kart Super Circuit [OST].ogg" type="AudioStream" id=7]
+[ext_resource path="res://ui/start_menu/MenuMusic.gd" type="Script" id=8]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Label
@@ -160,6 +161,7 @@ text = "Not So Fast"
 flat = true
 
 [node name="TrackSelect" type="Control" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -380,6 +382,7 @@ script = SubResource( 1 )
 stream = ExtResource( 7 )
 autoplay = true
 bus = "MenuBus"
+script = ExtResource( 8 )
 [connection signal="pressed" from="Title/Play" to="." method="_on_Play_pressed"]
 [connection signal="pressed" from="Title/Quit" to="." method="_on_Quit_pressed"]
 [connection signal="pressed" from="CCSelect/VBoxContainer/TooFast" to="." method="_on_TooFast_pressed"]
