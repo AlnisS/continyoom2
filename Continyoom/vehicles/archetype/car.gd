@@ -34,6 +34,7 @@ var curr_steer: float = 0 # internal interpolation variable
 var pos_vel: Vector3 = Vector3(0, 0, 0)
 var rot_vel: float = 0
 var vrt_vel: float = 0 # TODO: combine with pos_vel
+var override_motion: Vector3 = Vector3(0, 0, 0)
 
 # all constants (comment added for visual consistency)
 const STEER_SPEED = 14
@@ -51,6 +52,7 @@ const SPEED_FACTOR = 9999
 const MIN_DRIFT_SPEED = 5
 const WALL_COLLISION_HEIGHT = .125
 const WALL_BOUNCE_FACTOR = 1
+const OVERRIDE_SPEED = 30
 
 
 var cc = 100
@@ -78,7 +80,7 @@ func _ready():
 
 
 func _physics_process(delta):
-	print(translation)
+	print(override_motion)
 	if Input.is_action_just_pressed("reset"):
 		_reset()
 	_keyboard_timescale()
@@ -112,14 +114,23 @@ func _step_backward(delta: float) -> void:
 
 func _step_forward(delta: float) -> void:
 	history.push_back(_get_state_as_dictionary(delta))
-	if Input.is_action_just_pressed("bhop") and vrt_vel == 0:
-		vrt_vel = 5
-	if !Input.is_action_pressed("bhop"):
-		targ_drift = 0
-	_update_steer(delta)
-	_update_drift(delta)
-	_move(delta, _update_speed(delta))
-	_collide_walls(delta)
+	_collide_waluigi_cannon(delta)
+	if override_motion == Vector3(0, 0, 0):
+		if Input.is_action_just_pressed("bhop") and vrt_vel == 0:
+			vrt_vel = 5
+		if !Input.is_action_pressed("bhop"):
+			targ_drift = 0
+		_update_steer(delta)
+		_update_drift(delta)
+		_move(delta, _update_speed(delta))
+		_collide_walls(delta)
+	else:
+		var om: Vector3 = override_motion.normalized() * delta * OVERRIDE_SPEED
+		phys_transform.origin += om
+		override_motion -= om
+		vrt_vel = 0
+		if override_motion.length() < .5:
+			override_motion = Vector3(0, 0, 0)
 	_move_camera(delta)
 
 
@@ -229,6 +240,17 @@ func _collide_hit(hit: Dictionary) -> void:
 	phys_transform.origin = hit.position + phys_transform.basis.y * HEIGHT_ABOVE_GROUND
 
 
+func _collide_waluigi_cannon(delta: float) -> void:
+	var space_state = get_world().get_direct_space_state()
+	var hit = space_state.intersect_ray(
+			phys_transform.origin + phys_transform.basis.y * SEARCH_HIGH,
+			phys_transform.origin - phys_transform.basis.y * SEARCH_LOW,
+			[], 0x00000020)
+	if hit:
+#		print(hit.collider)
+		override_motion = Vector3(0, 32.2, -84.5)
+
+
 func _collide_ground(delta: float) -> void:
 	var space_state = get_world().get_direct_space_state()
 	var upper_hit = space_state.intersect_ray(
@@ -298,6 +320,7 @@ func _get_state_as_dictionary(delta: float) -> Dictionary:
 	state.curr_steer = curr_steer
 	state.curr_drift = curr_drift
 	state.camera_transform = camera_transform
+	state.override_motion = override_motion
 	return state
 
 
@@ -311,6 +334,7 @@ func _set_state_from_dictionary(state: Dictionary) -> void:
 	curr_steer = state.curr_steer
 	curr_drift = state.curr_drift
 	camera_transform = state.camera_transform
+	override_motion = state.override_motion
 
 
 func _interpolate_states(later_state: Dictionary, earlier_state: Dictionary, delta: float):
@@ -327,6 +351,7 @@ func _interpolate_states(later_state: Dictionary, earlier_state: Dictionary, del
 	state.curr_steer = lerp(earlier_state.curr_steer, later_state.curr_steer, lerp_amount)
 	state.curr_drift = lerp(earlier_state.curr_drift, later_state.curr_drift, lerp_amount)
 	state.camera_transform = earlier_state.camera_transform.interpolate_with(later_state.camera_transform, lerp_amount)
+	state.override_motion = lerp(earlier_state.override_motion, later_state.override_motion, lerp_amount)
 	return state
 
 
