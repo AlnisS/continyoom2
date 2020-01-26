@@ -196,7 +196,7 @@ tracks/0/keys = {
 [sub_resource type="BoxShape" id=47]
 extents = Vector3( 2.18126, 0.2, 1 )
 
-[node name="WaluigiPinball" index="0" instance=ExtResource( 1 )]
+[node name="WaluigiPinball" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="Empty" parent="." index="0"]

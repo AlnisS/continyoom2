@@ -54,6 +54,7 @@ const WALL_COLLISION_HEIGHT = .125
 const WALL_BOUNCE_FACTOR = 1
 const OVERRIDE_SPEED = 30
 
+const SMOOTHED = true
 
 var cc = 100
 var MAX_SPEED = 7
@@ -80,7 +81,7 @@ func _ready():
 
 
 func _physics_process(delta):
-	print(override_motion)
+	print(history.size())
 	if Input.is_action_just_pressed("reset"):
 		_reset()
 	_keyboard_timescale()
@@ -103,11 +104,13 @@ func _physics_process(delta):
 
 
 func _step_backward(delta: float) -> void:
-	while history.size() > 0 and delta >= history.back().remaining_delta:
-		latest_state = history.pop_back()
-		delta -= latest_state.remaining_delta
 	if history.size() == 0:
 		return
+	latest_state = history.back()
+	while history.size() > 1 and delta >= history.back().remaining_delta:
+		latest_state = history.pop_back()
+		delta -= latest_state.remaining_delta
+	print(history.back().keys())
 	history.back().remaining_delta -= delta
 	_set_state_from_dictionary(_interpolate_states(history.back(), latest_state, history.back().remaining_delta))
 
@@ -247,7 +250,6 @@ func _collide_waluigi_cannon(delta: float) -> void:
 			phys_transform.origin - phys_transform.basis.y * SEARCH_LOW,
 			[], 0x00000020)
 	if hit:
-#		print(hit.collider)
 		override_motion = Vector3(0, 32.2, -84.5)
 
 
@@ -282,14 +284,20 @@ func _just_drift() -> void:
 
 
 func _keyboard_timescale() -> void:
+	var proposed_timescale
 	if Input.is_action_pressed("reverse"):
-		timescale = -REVERSE_SPEED
+		proposed_timescale = -REVERSE_SPEED
 	elif Input.is_action_pressed("extra_speed"):
-		timescale = MAX_TIMESCALE
+		proposed_timescale = MAX_TIMESCALE
 	else:
-		timescale = NORMAL_TIMESCALE
+		proposed_timescale = NORMAL_TIMESCALE
 	if Input.is_action_pressed("slow"):
-		timescale *= SLOW_TIMESCALE
+		proposed_timescale *= SLOW_TIMESCALE
+	
+	if SMOOTHED:
+		timescale = lerp(timescale, proposed_timescale, .075)
+	else:
+		timescale = proposed_timescale
 
 
 func set_start(tfm: Transform) -> void:
