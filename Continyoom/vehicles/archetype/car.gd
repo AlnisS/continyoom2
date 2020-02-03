@@ -81,7 +81,6 @@ func _ready():
 
 
 func _physics_process(delta):
-	print(history.size())
 	if Input.is_action_just_pressed("reset"):
 		_reset()
 	_keyboard_timescale()
@@ -101,6 +100,7 @@ func _physics_process(delta):
 	emit_signal("timescale_updated", timescale)
 	emit_signal("targ_drift_updated", targ_drift)
 	emit_signal("curr_steer_updated", curr_steer)
+	print(camera_transform)
 
 
 func _step_backward(delta: float) -> void:
@@ -110,7 +110,6 @@ func _step_backward(delta: float) -> void:
 	while history.size() > 1 and delta >= history.back().remaining_delta:
 		latest_state = history.pop_back()
 		delta -= latest_state.remaining_delta
-	print(history.back().keys())
 	history.back().remaining_delta -= delta
 	_set_state_from_dictionary(_interpolate_states(history.back(), latest_state, history.back().remaining_delta))
 
@@ -300,18 +299,28 @@ func _keyboard_timescale() -> void:
 		timescale = proposed_timescale
 
 
-func set_start(tfm: Transform) -> void:
-	initial_phys_transform = tfm
+func set_camera_transform(tfm: Transform) -> void:
 	initial_camera_transform = tfm
+	camera_transform = tfm
+
+
+func set_start(tfm: Transform, ctfm: Transform) -> void:
+	initial_phys_transform = tfm
+	initial_camera_transform = ctfm
 	_reset()
 
 
 func _reset() -> void:
 	phys_transform = initial_phys_transform
+	transform = initial_phys_transform
+	camera_transform = initial_camera_transform
+	$Camera.transform = initial_camera_transform
+	print(initial_camera_transform)
 	pos_vel = Vector3(0, 0, 0)
 	rot_vel = 0
 	vrt_vel = 0
 	history = Array()
+	override_motion = Vector3(0, 0, 0)
 	_prepare_cc(cc)
 
 

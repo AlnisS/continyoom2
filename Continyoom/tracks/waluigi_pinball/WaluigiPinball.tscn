@@ -177,6 +177,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector3( 19.8007, 0, 0 ), Vector3( 19.801, 0, 360 ) ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Empty/ID462:mesh:surface_1/material:uv1_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 3, 0 ) ]
+}
 
 [sub_resource type="Animation" id=46]
 loop = true
@@ -200,7 +212,7 @@ extents = Vector3( 2.18126, 0.2, 1 )
 script = ExtResource( 2 )
 
 [node name="Empty" parent="." index="0"]
-transform = Transform( 0.924288, 0.381697, 0, -0.359129, 0.869639, -0.338754, -0.129301, 0.313106, 0.940875, 20.6806, 44.958, -34.6866 )
+transform = Transform( 1, -1.74846e-07, 0, 1.64508e-07, 0.940875, -0.338754, 5.92297e-08, 0.338754, 0.940875, 20.6806, 44.958, -34.6866 )
 
 [node name="flipper001_flipper" parent="." index="1"]
 visible = false
@@ -470,43 +482,46 @@ shape = SubResource( 42 )
 environment = ExtResource( 3 )
 
 [node name="CarStart" type="Spatial" parent="." index="146"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.2603, 44.5917, -36.6668 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.916, 14.4966, 62.0436 )
 script = ExtResource( 4 )
 
-[node name="TrackMusicPlayer" type="AudioStreamPlayer" parent="." index="147"]
+[node name="CameraStart" type="Spatial" parent="." index="147"]
+transform = Transform( 1, 0, 0, 0, 0.991191, 0.132439, 0, -0.132439, 0.991191, 20.916, 15.0398, 66.7926 )
+
+[node name="TrackMusicPlayer" type="AudioStreamPlayer" parent="." index="148"]
 pause_mode = 2
 stream = ExtResource( 5 )
 bus = "PauseEQ"
 script = ExtResource( 6 )
 
-[node name="TrackAnimationPlayer" type="AnimationPlayer" parent="." index="148"]
+[node name="TrackAnimationPlayer" type="AnimationPlayer" parent="." index="149"]
 autoplay = "track_animation"
 anims/track_animation = SubResource( 43 )
 
-[node name="ArrowAnimationPlayer" type="AnimationPlayer" parent="." index="149"]
+[node name="ArrowAnimationPlayer" type="AnimationPlayer" parent="." index="150"]
 autoplay = "arrow_animation"
 anims/arrow_animation = SubResource( 44 )
 
-[node name="CannonAnimationPlayer" type="AnimationPlayer" parent="." index="150"]
+[node name="CannonAnimationPlayer" type="AnimationPlayer" parent="." index="151"]
 autoplay = "cannon_animation"
 anims/cannon_animation = SubResource( 45 )
 
-[node name="CannonWallAnimationPlayer" type="AnimationPlayer" parent="." index="151"]
+[node name="CannonWallAnimationPlayer" type="AnimationPlayer" parent="." index="152"]
 autoplay = "cannon_wall_animation"
 playback_speed = 0.1
 anims/cannon_wall_animation = SubResource( 46 )
 
-[node name="beginning_end" type="Area" parent="." index="152"]
+[node name="beginning_end" type="Area" parent="." index="153"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 20.6749, 15.1603, 58.9649 )
 
 [node name="CollisionShape" type="CollisionShape" parent="beginning_end" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 7.10543e-15, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 47 )
 
-[node name="CannonA" type="Spatial" parent="." index="153"]
+[node name="CannonA" type="Spatial" parent="." index="154"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2218, 14.412, 47.2603 )
 
-[node name="CannonB" type="Spatial" parent="." index="154"]
+[node name="CannonB" type="Spatial" parent="." index="155"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2218, 46.5846, -37.293 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="155"]
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="156"]

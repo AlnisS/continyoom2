@@ -19,7 +19,7 @@ albedo_texture = ExtResource( 4 )
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 0.194782, 1.84629, 1.96473 )
 
-[node name="track1" instance=ExtResource( 1 )]
+[node name="track1" index="0" instance=ExtResource( 1 )]
 
 [node name="NurbsPath" parent="." index="0"]
 transform = Transform( 2.5, 0, 0, 0, 1, 0, 0, 0, 2.5, 0, 0, 0 )
@@ -44,13 +44,16 @@ material/0 = SubResource( 3 )
 stream = ExtResource( 5 )
 
 [node name="CarStart" type="Spatial" parent="." index="5"]
-transform = Transform( -4.37114e-008, 0, -1, 0, 1, 0, 1, 0, -4.37114e-008, -2, 1, 0 )
+transform = Transform( -4.37114e-08, -0.00613519, -0.999981, 0, 0.999981, -0.00613519, 1, -2.68178e-10, -4.37106e-08, -2, 0.592639, 0 )
 script = ExtResource( 6 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="." index="6"]
+[node name="CameraStart" type="Spatial" parent="." index="6"]
+transform = Transform( -4.37114e-08, -0.00613519, -0.999981, 0, 0.999981, -0.00613519, 1, -2.68178e-10, -4.37106e-08, -4.92106, 0.773378, -1.27684e-07 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="." index="7"]
 transform = Transform( 0.965926, -0.0669873, -0.25, 0.258819, 0.25, 0.933013, 0, -0.965926, 0.258819, 0, 3, 0 )
 
-[node name="beginning_end" type="Area" parent="." index="7"]
+[node name="beginning_end" type="Area" parent="." index="8"]
 
 [node name="CollisionShape" type="CollisionShape" parent="beginning_end" index="0"]
 shape = SubResource( 4 )

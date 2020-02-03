@@ -11,6 +11,7 @@ func add_track(path: String):
 #	var track: Node = load(path).instance()
 	track = load(path).instance()
 	$Car.connect("timescale_updated", track, "_on_timescale_updated")
+	$Car.set_camera_transform(track.get_node("CameraStart").transform)
 	add_child(track)
 	track.get_node("CarStart").connect("tfm_ready", $Car, "set_start")
 
